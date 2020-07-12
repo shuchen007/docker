@@ -1,5 +1,5 @@
 FROM centos:7.6.1810
-MAINTAINER sunhao
+MAINTAINER dd
 # 环境配置(jdk,yarn,nginx,derby)
 RUN mkdir /usr/local/java
 ADD jdk-8u251-linux-x64.tar.gz /usr/local/java
@@ -12,7 +12,7 @@ ENV CLASSPATH .:${JAVA_HOME}/lib:${JRE_HOME}/lib
 ENV PATH ${JAVA_HOME}/bin:$PATH 
 ENV ELASTIC_HOSTS="192.168.0.121:9200"
 ENV ELASTIC_USER="elastic"
-ENV ELASTIC_PASSWORD="Passc0de@tp"
+ENV ELASTIC_PASSWORD=""
 ENV KIBANA_URL="http://192.168.0.121:5601"
 ENV ANSIBLE_HOST="localhost"
 ENV ANSIBLE_USER="root"
@@ -41,7 +41,7 @@ RUN envsubst '${KIBANA_URL}' < /etc/nginx/nginx.template > /etc/nginx/nginx.conf
 COPY certificate /etc/nginx/certificate/
 # 新建ansible用户
 RUN useradd --create-home --no-log-init --shell /bin/bash ansible_user
-RUN echo 'root:Passc0de@tp' | chpasswd
+RUN echo 'root:**' | chpasswd
 RUN mkdir -p /home/filebeat/modules
 
 COPY startup.sh .
